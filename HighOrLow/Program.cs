@@ -16,7 +16,7 @@ namespace HighOrLow
             Random randTyp = new Random();
             int kortNummer;
             int kortTyp;
-            string spelatKort;
+            string spelatKortId;
 
             for (int i = 0; i < 52; i++)
             {
@@ -24,24 +24,21 @@ namespace HighOrLow
                 {
                     kortNummer = randNummer.Next(0, 13);
                     kortTyp = randTyp.Next(0, 4);
-                    spelatKort = kortTyp.ToString() + kortNummer.ToString();
+                    spelatKortId = "#" + kortTyp.ToString() + kortNummer.ToString();
 
-                    if (speladeKort.Contains(spelatKort) == true)
+                    if (speladeKort.Contains(spelatKortId) == true)
                     {
-                        Console.WriteLine(spelatKort);
                         continue;
                     }
                     else
                     {
+                        kortlek[kortTyp, kortNummer].ShowCards();
+                        speladeKort.Add(spelatKortId);
+
+                        Console.WriteLine("i = " + i);
                         break;
                     }
                 }
-                kortlek[kortTyp, kortNummer].ShowCards();
-                speladeKort.Add(spelatKort);
-
-                Console.ReadLine();
-
-                Console.WriteLine(i + " = i");
             }
 
             Console.ReadLine();
