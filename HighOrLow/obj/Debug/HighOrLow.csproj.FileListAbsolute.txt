@@ -1,0 +1,7 @@
+C:\Users\casper.karlsson3\source\repos\HighOrLow\HighOrLow\bin\Debug\HighOrLow.exe.config
+C:\Users\casper.karlsson3\source\repos\HighOrLow\HighOrLow\bin\Debug\HighOrLow.exe
+C:\Users\casper.karlsson3\source\repos\HighOrLow\HighOrLow\bin\Debug\HighOrLow.pdb
+C:\Users\casper.karlsson3\source\repos\HighOrLow\HighOrLow\obj\Debug\HighOrLow.csprojAssemblyReference.cache
+C:\Users\casper.karlsson3\source\repos\HighOrLow\HighOrLow\obj\Debug\HighOrLow.csproj.CoreCompileInputs.cache
+C:\Users\casper.karlsson3\source\repos\HighOrLow\HighOrLow\obj\Debug\HighOrLow.exe
+C:\Users\casper.karlsson3\source\repos\HighOrLow\HighOrLow\obj\Debug\HighOrLow.pdb
