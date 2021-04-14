@@ -26,18 +26,23 @@ namespace HighOrLow
             Console.WriteLine(kortAttribut + " " + kortNummer);
         }
 
+        public kortStorlek GetNumber()
+        {
+            return kortNummer;
+        }
+
         static public List<SkapaKortlek> CreateCards()
         {
-            int index = 0;
             List<SkapaKortlek> kort = new List<SkapaKortlek>();
             SkapaKortlek[,] temporärKortlek = new SkapaKortlek[4, 13];
+            int index = 0;
 
             for (int j = 0; j < 4; j++)
             {
                 for (int k = 0; k < 13; k++)
                 {
-                    temporärKortlek[k, j] = new SkapaKortlek((kortStorlek)j, (kortTyp)k);
-                    kort[index] = temporärKortlek[k, j];
+                    temporärKortlek[j, k] = new SkapaKortlek((kortStorlek)k, (kortTyp)j);
+                    kort.Add(temporärKortlek[j, k]);
                     index++;
                 }
             }
