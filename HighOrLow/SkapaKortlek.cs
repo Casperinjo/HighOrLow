@@ -23,19 +23,26 @@ namespace HighOrLow
 
         public void ShowCards()
         {
-            Console.WriteLine(kortNummer + " " + kortAttribut);
+            Console.WriteLine(kortAttribut + " " + kortNummer);
         }
 
-        static public SkapaKortlek[,] CreateCards()
+        static public List<SkapaKortlek> CreateCards()
         {
-            SkapaKortlek[,] kort = new SkapaKortlek[4, 13];
-            for (int i = 0; i < 13; i++)
+            int index = 0;
+            List<SkapaKortlek> kort = new List<SkapaKortlek>();
+            SkapaKortlek[,] temporärKortlek = new SkapaKortlek[4, 13];
+
+            for (int j = 0; j < 4; j++)
             {
-                for (int j = 0; j < 4; j++)
+                for (int k = 0; k < 13; k++)
                 {
-                    kort[j, i] = new SkapaKortlek((kortStorlek)i, (kortTyp)j);
+                    temporärKortlek[k, j] = new SkapaKortlek((kortStorlek)j, (kortTyp)k);
+                    kort[index] = temporärKortlek[k, j];
+                    index++;
                 }
             }
+
+            Array.Clear(temporärKortlek, 0, temporärKortlek.Length);
             return kort;
         }
     }

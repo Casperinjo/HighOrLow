@@ -12,3 +12,10 @@ C:\Users\CASPER\source\repos\HighOrLow\HighOrLow\obj\Debug\HighOrLow.csprojAssem
 C:\Users\CASPER\source\repos\HighOrLow\HighOrLow\obj\Debug\HighOrLow.csproj.CoreCompileInputs.cache
 C:\Users\CASPER\source\repos\HighOrLow\HighOrLow\obj\Debug\HighOrLow.exe
 C:\Users\CASPER\source\repos\HighOrLow\HighOrLow\obj\Debug\HighOrLow.pdb
+C:\Users\casper.karlsson3\Documents\GitHub\HighOrLow\HighOrLow\bin\Debug\HighOrLow.exe.config
+C:\Users\casper.karlsson3\Documents\GitHub\HighOrLow\HighOrLow\bin\Debug\HighOrLow.exe
+C:\Users\casper.karlsson3\Documents\GitHub\HighOrLow\HighOrLow\bin\Debug\HighOrLow.pdb
+C:\Users\casper.karlsson3\Documents\GitHub\HighOrLow\HighOrLow\obj\Debug\HighOrLow.csprojAssemblyReference.cache
+C:\Users\casper.karlsson3\Documents\GitHub\HighOrLow\HighOrLow\obj\Debug\HighOrLow.csproj.CoreCompileInputs.cache
+C:\Users\casper.karlsson3\Documents\GitHub\HighOrLow\HighOrLow\obj\Debug\HighOrLow.exe
+C:\Users\casper.karlsson3\Documents\GitHub\HighOrLow\HighOrLow\obj\Debug\HighOrLow.pdb

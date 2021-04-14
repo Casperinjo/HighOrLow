@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace HighOrLow
 {
@@ -10,34 +10,21 @@ namespace HighOrLow
     {
         private static void Main(string[] args)
         {
-            SkapaKortlek[,] kortlek = SkapaKortlek.CreateCards();
-            List<string> speladeKort = new List<string>();
-            Random randNummer = new Random();
-            Random randTyp = new Random();
-            int kortNummer;
-            int kortTyp;
-            string spelatKortId;
+            List<SkapaKortlek> kortlek = SkapaKortlek.CreateCards();
+            List<SkapaKortlek> temporärKortlek = new List<SkapaKortlek>();
 
-            for (int i = 0; i < 52; i++)
+            Random randKort = new Random();
+
+            int kort;
+
+            for (int i = 0; i < kortlek.Count; i++)
             {
-                while (true)
+                for (int j = 0; j < 13; j++)
                 {
-                    kortNummer = randNummer.Next(0, 13);
-                    kortTyp = randTyp.Next(0, 4);
-                    spelatKortId = "#" + kortTyp.ToString() + kortNummer.ToString();
-
-                    if (speladeKort.Contains(spelatKortId) == true)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        kortlek[kortTyp, kortNummer].ShowCards();
-                        speladeKort.Add(spelatKortId);
-
-                        Console.WriteLine("i = " + i);
-                        break;
-                    }
+                    kort = randKort.Next(0, kortlek.Count - 1);
+                    temporärKortlek.Add(kortlek[kort]);
+                    kortlek.Remove(kortlek[kort]);
+                    temporärKortlek[j].ShowCards();
                 }
             }
 
