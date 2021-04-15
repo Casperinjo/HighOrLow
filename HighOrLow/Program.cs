@@ -18,6 +18,7 @@ namespace HighOrLow
             {
                 for (int i = 0; i < 4; i++)
                 {
+                    kortlek = SkapaKortlek.CreateCards();
                     Console.Clear();
                     Console.WriteLine("Du har nu totalt : " + poäng + " poäng!");
                     Console.WriteLine("Omgång : " + (i + 1));
@@ -80,7 +81,7 @@ namespace HighOrLow
                 {
                     Console.BackgroundColor = ConsoleColor.Red;
                     Console.Write("Tyvärr du förlorade spelade för nästa kort var också : ");
-                    temporärKortlek[i].ShowCards();
+                    temporärKortlek[i + 1].ShowCards();
                     Console.WriteLine("Tryck 1 för att avsluta spelet : ");
                     Console.WriteLine("Tryck 2 för att start om spelet");
                     Barrier();
@@ -88,12 +89,13 @@ namespace HighOrLow
                     switch (gameChoice)
                     {
                         case 1:
+
                             Environment.Exit(0);
                             break;
 
                         case 2:
                             Console.BackgroundColor = ConsoleColor.Blue;
-                            kortlek = SkapaKortlek.CreateCards();
+
                             temporärKortlek.Clear();
                             return restart;
                     }
@@ -105,7 +107,7 @@ namespace HighOrLow
                     Console.BackgroundColor = ConsoleColor.Green;
 
                     Console.WriteLine("Nästa kort var ett trumf kort så du får ett poäng ");
-                    poäng++;
+                    ++poäng;
                     continue;
                 }
 
@@ -120,7 +122,7 @@ namespace HighOrLow
                 {
                     Console.BackgroundColor = ConsoleColor.Green;
 
-                    poäng++;
+                    ++poäng;
                     Console.Write("Du hade rätt nästa kort var : ");
                     temporärKortlek[i + 1].ShowCards();
                 }
@@ -131,7 +133,7 @@ namespace HighOrLow
                     temporärKortlek[i + 1].ShowCards();
                 }
             }
-            if (poäng % 13 == 0)
+            if (poäng % 12 == 0)
             {
                 Console.WriteLine("Grattis du hade alla rätt och får 50 extra poäng! ");
                 poäng += 50;
@@ -152,7 +154,7 @@ namespace HighOrLow
             Console.BackgroundColor = ConsoleColor.Blue;
             Barrier();
             Console.ReadLine();
-            kortlek = SkapaKortlek.CreateCards();
+
             temporärKortlek.Clear();
             restart = false;
             return restart;
