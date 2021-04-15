@@ -13,7 +13,7 @@ namespace HighOrLow
             List<SkapaKortlek> kortlek = SkapaKortlek.CreateCards();
             List<SkapaKortlek> temporärKortlek = new List<SkapaKortlek>();
             int poäng = 0;
-            bool restart;
+            int gameChoice = 0;
             while (true)
             {
                 for (int i = 0; i < 4; i++)
@@ -23,8 +23,9 @@ namespace HighOrLow
                     Console.WriteLine("Du har nu totalt : " + poäng + " poäng!");
                     Console.WriteLine("Omgång : " + (i + 1));
                     Barrier();
-                    restart = GameRun(kortlek, temporärKortlek, poäng);
-                    if (restart)
+                    poäng = GameRun(kortlek, temporärKortlek, poäng);
+
+                    if (gameChoice == 1)
                     {
                         break;
                     }
@@ -41,11 +42,11 @@ namespace HighOrLow
         /// </summary>
         /// <param name="kortlek"></param>
         /// <param name="temporärKortlek"></param>
-        private static bool GameRun(List<SkapaKortlek> kortlek, List<SkapaKortlek> temporärKortlek, int poäng)
+        private static int GameRun(List<SkapaKortlek> kortlek, List<SkapaKortlek> temporärKortlek, int poäng)
         {
             Random randKort = new Random();
 
-            //om användaren vill start om spelet returnerar metoden den här booleanen.
+            //om användaren vill start om spelet returnerar metoden den här booleanen till false.
             bool restart = true;
 
             //varibel som kommer slumpas och bestämmer vilket kort från kortleken som kommer att dras ut.
@@ -54,9 +55,6 @@ namespace HighOrLow
             int val;
             //denna variable bestämmer om valet användaren gjort stämmer eller inte
             bool resultat = true;
-
-            //Denna ska bestämma om spelet ska starta om eller avslutas.
-            int gameChoice;
 
             //Dennna loop tar ut 13 slumpade kort från huvud kortlek och raderas och läggs till i en temporär kortlek istället.
             for (int i = 0; i < 13; i++)
@@ -82,23 +80,10 @@ namespace HighOrLow
                     Console.BackgroundColor = ConsoleColor.Magenta;
                     Console.Write("Tyvärr du förlorade spelade för nästa kort var också : ");
                     temporärKortlek[i + 1].ShowCards();
-                    Console.WriteLine("Tryck 1 för att avsluta spelet : ");
-                    Console.WriteLine("Tryck 2 för att start om spelet");
-                    Barrier();
-                    gameChoice = LäsInInt();
-                    switch (gameChoice)
-                    {
-                        case 1:
 
-                            Environment.Exit(0);
-                            break;
-
-                        case 2:
-                            Console.BackgroundColor = ConsoleColor.White;
-
-                            temporärKortlek.Clear();
-                            return restart;
-                    }
+                    Console.BackgroundColor = ConsoleColor.White;
+                    temporärKortlek.Clear();
+                    return poäng;
                 }
 
                 //Om nästa kort är ett ess, det vill säga ett trumf kort så får hen poäng automatiskt.
@@ -156,8 +141,8 @@ namespace HighOrLow
             Console.ReadLine();
 
             temporärKortlek.Clear();
-            restart = false;
-            return restart;
+
+            return poäng;
         }
 
         /// <summary>
