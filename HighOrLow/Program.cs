@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.IO;
 
 namespace HighOrLow
 {
@@ -10,30 +11,55 @@ namespace HighOrLow
     {
         private static void Main(string[] args)
         {
+
+           
             List<SkapaKortlek> kortlek = SkapaKortlek.CreateCards();
             List<SkapaKortlek> temporärKortlek = new List<SkapaKortlek>();
-            int poäng = 0;
-            int gameChoice = 0;
+            users användare = users.CreateOrUseUser();
+
+            
+            bool restart = true;
+            string highscoreText;
+
+            highscoreText = användare.GetHighscore();
+            int highscore = int.Parse(highscoreText);
+            
+
+            
+                    
+            
+                
+           
+                    
+               
+
+            
+           
             while (true)
             {
                 for (int i = 0; i < 4; i++)
                 {
                     kortlek = SkapaKortlek.CreateCards();
                     Console.Clear();
-                    Console.WriteLine("Du har nu totalt : " + poäng + " poäng!");
+                    Console.WriteLine("Du har nu totalt : " + användare.GetHighscore() + " poäng!");
                     Console.WriteLine("Omgång : " + (i + 1));
                     Barrier();
-                    poäng = GameRun(kortlek, temporärKortlek, poäng);
-
-                    if (gameChoice == 1)
+                    restart = GameRun(kortlek, temporärKortlek, användare, highscoreText);
+                    
+                    if (restart)
                     {
+                        användare.Highscore(användare.GetPoints().ToString());
                         break;
                     }
                     else
                     {
                         continue;
                     }
+
+                    
                 }
+
+
             }
         }
 
@@ -42,12 +68,15 @@ namespace HighOrLow
         /// </summary>
         /// <param name="kortlek"></param>
         /// <param name="temporärKortlek"></param>
-        private static int GameRun(List<SkapaKortlek> kortlek, List<SkapaKortlek> temporärKortlek, int poäng)
+        private static bool GameRun(List<SkapaKortlek> kortlek, List<SkapaKortlek> temporärKortlek, users användare, string highscoreText)
         {
             Random randKort = new Random();
 
+            string points;
+
+            int poäng = 0;
             //om användaren vill start om spelet returnerar metoden den här booleanen till false.
-            bool restart = true;
+            bool restart = false;
 
             //varibel som kommer slumpas och bestämmer vilket kort från kortleken som kommer att dras ut.
             int kort;
@@ -55,6 +84,8 @@ namespace HighOrLow
             int val;
             //denna variable bestämmer om valet användaren gjort stämmer eller inte
             bool resultat = true;
+
+            int gameChoice;
 
             //Dennna loop tar ut 13 slumpade kort från huvud kortlek och raderas och läggs till i en temporär kortlek istället.
             for (int i = 0; i < 13; i++)
@@ -80,10 +111,28 @@ namespace HighOrLow
                     Console.BackgroundColor = ConsoleColor.Magenta;
                     Console.Write("Tyvärr du förlorade spelade för nästa kort var också : ");
                     temporärKortlek[i + 1].ShowCards();
+                    Console.WriteLine("Tryck 1 för att starta om spelet! ");
+                    Console.WriteLine("Tryck 2 för att avsluta speler! ");
+                    gameChoice = LäsInInt();
+                    användare.Highscore(användare.GetPoints().ToString());
 
-                    Console.BackgroundColor = ConsoleColor.White;
-                    temporärKortlek.Clear();
-                    return poäng;
+                    if (gameChoice == 1)
+                    {
+                        Console.BackgroundColor = ConsoleColor.White;
+                        
+                        temporärKortlek.Clear();
+                        restart = true;
+                        return restart;
+                    }
+
+
+                    else
+                    {
+                        
+                        Environment.Exit(0);
+                    }
+
+                   
                 }
 
                 //Om nästa kort är ett ess, det vill säga ett trumf kort så får hen poäng automatiskt.
@@ -91,8 +140,9 @@ namespace HighOrLow
                 {
                     Console.BackgroundColor = ConsoleColor.Yellow;
 
+
                     Console.WriteLine("Nästa kort var ett trumf kort så du får ett poäng ");
-                    ++poäng;
+                    
                     continue;
                 }
 
@@ -107,7 +157,7 @@ namespace HighOrLow
                 {
                     Console.BackgroundColor = ConsoleColor.Green;
 
-                    ++poäng;
+                    poäng = användare.addPoints();
                     Console.Write("Du hade rätt nästa kort var : ");
                     temporärKortlek[i + 1].ShowCards();
                 }
@@ -133,6 +183,8 @@ namespace HighOrLow
             }
             else
             {
+                användare.Highscore(användare.GetPoints().ToString());
+                
                 Environment.Exit(0);
             }
 
@@ -141,8 +193,8 @@ namespace HighOrLow
             Console.ReadLine();
 
             temporärKortlek.Clear();
-
-            return poäng;
+            
+            return restart;
         }
 
         /// <summary>
@@ -182,6 +234,12 @@ namespace HighOrLow
         {
             Console.WriteLine("----------------");
         }
+
+
+       
+
+
+
 
         /// <summary>
         /// Den här metoden är till för att läsa in all heltal som använder ska slå in, den tillåter inte strings eller double. Och inte heller heltal som är större än 2 mindre än 0.
