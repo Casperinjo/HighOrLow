@@ -12,15 +12,17 @@ namespace HighOrLow
         {
             List<SkapaKortlek> kortlek = SkapaKortlek.CreateCards();
             List<SkapaKortlek> temporärKortlek = new List<SkapaKortlek>();
+            int poäng = 0;
             bool restart;
             while (true)
             {
                 for (int i = 0; i < 4; i++)
                 {
                     Console.Clear();
+                    Console.WriteLine("Du har nu totalt : " + poäng + " poäng!");
                     Console.WriteLine("Omgång : " + (i + 1));
                     Barrier();
-                    restart = GameRun(kortlek, temporärKortlek);
+                    restart = GameRun(kortlek, temporärKortlek, poäng);
                     if (restart)
                     {
                         break;
@@ -38,7 +40,7 @@ namespace HighOrLow
         /// </summary>
         /// <param name="kortlek"></param>
         /// <param name="temporärKortlek"></param>
-        private static bool GameRun(List<SkapaKortlek> kortlek, List<SkapaKortlek> temporärKortlek)
+        private static bool GameRun(List<SkapaKortlek> kortlek, List<SkapaKortlek> temporärKortlek, int poäng)
         {
             Random randKort = new Random();
 
@@ -51,8 +53,6 @@ namespace HighOrLow
             int val;
             //denna variable bestämmer om valet användaren gjort stämmer eller inte
             bool resultat = true;
-
-            int poäng = 0;
 
             //Denna ska bestämma om spelet ska starta om eller avslutas.
             int gameChoice;
@@ -78,6 +78,7 @@ namespace HighOrLow
                 //Om korten är par så förlorar spelare och får välja om hen vill starta om eller avsluta spelet.
                 if (temporärKortlek[i].GetNumber() == temporärKortlek[i + 1].GetNumber())
                 {
+                    Console.BackgroundColor = ConsoleColor.Red;
                     Console.Write("Tyvärr du förlorade spelade för nästa kort var också : ");
                     temporärKortlek[i].ShowCards();
                     Console.WriteLine("Tryck 1 för att avsluta spelet : ");
@@ -91,6 +92,7 @@ namespace HighOrLow
                             break;
 
                         case 2:
+                            Console.BackgroundColor = ConsoleColor.Blue;
                             kortlek = SkapaKortlek.CreateCards();
                             temporärKortlek.Clear();
                             return restart;
@@ -100,23 +102,31 @@ namespace HighOrLow
                 //Om nästa kort är ett ess, det vill säga ett trumf kort så får hen poäng automatiskt.
                 else if (temporärKortlek[i + 1].GetNumber() == (kortStorlek)12)
                 {
+                    Console.BackgroundColor = ConsoleColor.Green;
+
                     Console.WriteLine("Nästa kort var ett trumf kort så du får ett poäng ");
                     poäng++;
                     continue;
                 }
+
+                // Detta körs varje gång du inte får par eller trumf kort.
                 else
                 {
                     resultat = SkrivUtSwitch(val, temporärKortlek[i].GetNumber(), temporärKortlek[i + 1].GetNumber());
                 }
 
+                // Denna skriver ut om du hade fel eller om du hade rätt.
                 if (resultat)
                 {
+                    Console.BackgroundColor = ConsoleColor.Green;
+
                     poäng++;
                     Console.Write("Du hade rätt nästa kort var : ");
                     temporärKortlek[i + 1].ShowCards();
                 }
                 else
                 {
+                    Console.BackgroundColor = ConsoleColor.Red;
                     Console.Write("Det var fel nästa kort var : ");
                     temporärKortlek[i + 1].ShowCards();
                 }
@@ -126,7 +136,23 @@ namespace HighOrLow
                 Console.WriteLine("Grattis du hade alla rätt och får 50 extra poäng! ");
                 poäng += 50;
             }
+            Console.WriteLine("Omgång 1 är klar du samlade totalt : " + poäng + " poäng!");
+            Console.WriteLine("Tryck 1 för att fortsätta spelet : ");
+            Console.WriteLine("Tryck 2 för att stänga av spelet : ");
+            gameChoice = LäsInInt();
+            if (gameChoice == 1)
+            {
+                Console.WriteLine("Spelet fortsätter! ");
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
+
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Barrier();
             Console.ReadLine();
+            kortlek = SkapaKortlek.CreateCards();
             temporärKortlek.Clear();
             restart = false;
             return restart;
