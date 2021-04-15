@@ -79,7 +79,7 @@ namespace HighOrLow
                 //Om korten är par så förlorar spelare och får välja om hen vill starta om eller avsluta spelet.
                 if (temporärKortlek[i].GetNumber() == temporärKortlek[i + 1].GetNumber())
                 {
-                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Magenta;
                     Console.Write("Tyvärr du förlorade spelade för nästa kort var också : ");
                     temporärKortlek[i + 1].ShowCards();
                     Console.WriteLine("Tryck 1 för att avsluta spelet : ");
@@ -94,7 +94,7 @@ namespace HighOrLow
                             break;
 
                         case 2:
-                            Console.BackgroundColor = ConsoleColor.Blue;
+                            Console.BackgroundColor = ConsoleColor.White;
 
                             temporärKortlek.Clear();
                             return restart;
@@ -104,7 +104,7 @@ namespace HighOrLow
                 //Om nästa kort är ett ess, det vill säga ett trumf kort så får hen poäng automatiskt.
                 else if (temporärKortlek[i + 1].GetNumber() == (kortStorlek)12)
                 {
-                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.BackgroundColor = ConsoleColor.Yellow;
 
                     Console.WriteLine("Nästa kort var ett trumf kort så du får ett poäng ");
                     ++poäng;
@@ -151,7 +151,7 @@ namespace HighOrLow
                 Environment.Exit(0);
             }
 
-            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.BackgroundColor = ConsoleColor.White;
             Barrier();
             Console.ReadLine();
 
