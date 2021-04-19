@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.IO;
+
 
 namespace HighOrLow
 {
@@ -14,6 +14,9 @@ namespace HighOrLow
             List<SkapaKortlek> kortlek = SkapaKortlek.CreateCards();
             List<SkapaKortlek> temporärKortlek = new List<SkapaKortlek>();
             users användare = users.CreateOrUseUser();
+
+            
+
 
             bool restart = true;
             string highscoreText;
@@ -32,9 +35,23 @@ namespace HighOrLow
                     Barrier();
                     restart = GameRun(kortlek, temporärKortlek, användare, highscoreText);
 
+                    if (i == 3)
+                    {
+                        Console.WriteLine("Det var sista omgången och du samlade ihop : " + användare.GetPoints() + " poäng");
+                        Console.WriteLine("Vill du start om eller vill du stänga av spelet?");
+                        Console.WriteLine("Tryck 1 för att starta om spelet!");
+                        Console.WriteLine("Tryck 2 för att stänga av spelet! ");
+                        int endGame = LäsInInt();
+                        if (endGame == 1)
+                        {
+                            restart = false;
+                        }
+                        
+                    }
+
                     if (restart)
                     {
-                        användare.Highscore(användare.GetPoints().ToString());
+                        användare.Highscore(användare.GetPoints());
                         break;
                     }
                     else
@@ -42,6 +59,8 @@ namespace HighOrLow
                         continue;
                     }
                 }
+
+                    
             }
         }
 
@@ -107,7 +126,7 @@ namespace HighOrLow
                     }
                     else
                     {
-                        användare.Highscore(användare.GetPoints().ToString());
+                        användare.Highscore(användare.GetPoints());
                         Environment.Exit(0);
                     }
                 }
@@ -159,7 +178,7 @@ namespace HighOrLow
             }
             else
             {
-                användare.Highscore(användare.GetPoints().ToString());
+                användare.Highscore(användare.GetPoints());
 
                 Environment.Exit(0);
             }

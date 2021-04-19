@@ -26,18 +26,33 @@ namespace HighOrLow
             return poäng;
         }
 
-        public void Highscore(string points)
+        public void Highscore(int points)
         {
-            string path = @"C:\Users\CASPER\source\repos\HighOrLow\HighOrLow\bin\Debug\HOLusers\";
-            string schoolPath = @"C:\Users\casper.karlsson3\Documents\GitHub\HighOrLow\HighOrLow\bin\Debug\HOLusers\";
 
-            int totalPoängHeltal = int.Parse(highscore);
-            int pointsHeltal = int.Parse(points);
+            
 
-            if (totalPoängHeltal < pointsHeltal)
+
+            int highscoreHeltal = int.Parse(highscore);
+           
+
+            FileStream fileStream = File.OpenWrite(username);
+            StreamWriter writer = new StreamWriter(fileStream);
+
+
+            if (highscoreHeltal < points)
             {
-                File.WriteAllText(schoolPath + username, points);
+                writer.WriteLine(points);
             }
+            else
+            {
+                writer.WriteLine(highscore);
+            }
+            writer.Close();
+        }
+
+        public string ShowUser()
+        {
+            return username;
         }
 
         static public users CreateOrUseUser()
@@ -46,13 +61,23 @@ namespace HighOrLow
 
             string path = @"C:\Users\CASPER\source\repos\HighOrLow\HighOrLow\bin\Debug\HOLusers\";
             string schoolPath = @"C:\Users\casper.karlsson3\Documents\GitHub\HighOrLow\HighOrLow\bin\Debug\HOLusers\";
+            string[] myFiles = Directory.GetFiles(path);
 
-            string[] myFiles = Directory.GetFiles(schoolPath);
+            
 
-            foreach (string myFile in myFiles)
-            {
-                användare.Add(new users(myFile, File.ReadAllText(myFile), 0));
-            }
+                foreach (string myFile in myFiles)
+                {
+                    FileStream fileStream = File.OpenRead(myFile);
+                    StreamReader reader = new StreamReader(fileStream);
+                    
+                    användare.Add(new users(myFile, reader.ReadLine() , 0));
+                     
+
+                    reader.Close();
+                    
+                }
+
+            
 
             int userChoice;
             string användarnamn;
@@ -90,7 +115,7 @@ namespace HighOrLow
 
                     foreach (users user in användare)
                     {
-                        if (schoolPath + användarnamn + ".txt" == user.GetUserName())
+                        if (path + användarnamn + ".txt" == user.GetUserName())
                         {
                             return user;
                         }
@@ -102,11 +127,21 @@ namespace HighOrLow
             }
             else
             {
-                Console.Write("Skriv vad din användare ska ha för användar namn : ");
-                användarnamn = Console.ReadLine();
+                Console.Write("Skriv vad din användare ska ha för användarnamn : ");
+                
+                string pathFile = @"C:\Users\CASPER\source\repos\HighOrLow\HighOrLow\bin\Debug\HOLusers\" + Console.ReadLine() + ".txt";
 
-                File.Create(schoolPath + användarnamn + ".txt");
-                users newUser = new users(användarnamn + ".txt", "0", 0);
+                FileStream createFile = File.Create(pathFile);
+                createFile.Close();
+                FileStream sw = File.OpenWrite(pathFile);
+                StreamWriter writer = new StreamWriter(sw);
+                
+                writer.WriteLine("0");
+                writer.Close();
+                
+                users newUser = new users(pathFile, "0", 0);
+                
+                
                 return newUser;
             }
         }
@@ -116,7 +151,7 @@ namespace HighOrLow
             return username;
         }
 
-        public string GetHighscore()
+         public string GetHighscore()
         {
             return highscore;
         }
