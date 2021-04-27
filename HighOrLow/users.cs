@@ -9,10 +9,12 @@ namespace HighOrLow
 {
     internal class users
     {
+        //Fältvariabler
         private string username;
         private string highscore;
         private int poäng;
 
+        //Contructor
         public users(string username, string highscore, int poäng)
         {
             this.username = username;
@@ -20,12 +22,20 @@ namespace HighOrLow
             this.poäng = poäng;
         }
 
-        public int addPoints()
+        /// <summary>
+        /// Denna metod adderar poängen som användaren har det här spelet
+        /// </summary>
+        /// <returns></returns>
+        public void addPoints(int roundPoints)
         {
-            poäng++;
-            return poäng;
+            poäng += roundPoints;
+            
         }
 
+        /// <summary>
+        /// Denna metod sparar highscoren, om användaren har slagit ett nytt rekord eller om det fortfarande är de gammla
+        /// </summary>
+        /// <param name="points"></param>
         public void Highscore(int points)
         {
 
@@ -50,17 +60,17 @@ namespace HighOrLow
             writer.Close();
         }
 
-        public string ShowUser()
-        {
-            return username;
-        }
-
+        
+        /// <summary>
+        /// Metoden låter användaren välja om hen vill använda en existerande användare eller skapa en ny
+        /// </summary>
+        /// <returns></returns>
         static public users CreateOrUseUser()
         {
             List<users> användare = new List<users>();
 
-            string path = @"C:\Users\CASPER\source\repos\HighOrLow\HighOrLow\bin\Debug\HOLusers\";
-            string schoolPath = @"C:\Users\casper.karlsson3\Documents\GitHub\HighOrLow\HighOrLow\bin\Debug\HOLusers\";
+            string path = @"Holusers\";
+            
             string[] myFiles = Directory.GetFiles(path);
 
             
@@ -78,13 +88,14 @@ namespace HighOrLow
                 }
 
             
-
+           
             int userChoice;
             string användarnamn;
 
             Console.WriteLine("Vill du använda en existerande användare eller skapa en ny?");
             Console.WriteLine("Tryck 1 för att använda en existerande!");
             Console.WriteLine("Tryck 2 för att skapa en ny användare!");
+            
             while (true)
             {
                 try
@@ -127,10 +138,40 @@ namespace HighOrLow
             }
             else
             {
-                Console.Write("Skriv vad din användare ska ha för användarnamn : ");
-                
-                string pathFile = @"C:\Users\CASPER\source\repos\HighOrLow\HighOrLow\bin\Debug\HOLusers\" + Console.ReadLine() + ".txt";
+                    Console.Write("Skriv vad din användare ska ha för användarnamn : ");
+                    användarnamn = "";
+                bool existingUser = true;
 
+                while (existingUser)
+                {
+                    användarnamn = Console.ReadLine();
+                    foreach (users user in användare)
+                    {
+
+
+                        if (path + användarnamn + ".txt" == user.GetUserName())
+                        {
+                            Console.WriteLine("Denna användare finns redan! Välj ett annant användarnamn.");
+                            break;
+                        }
+                        else
+                        {
+                            existingUser = false;
+                            break;
+                        }
+
+
+                    }
+                }
+                    
+                    
+                    
+                
+
+
+                string pathFile = @"C:\Users\CASPER\source\repos\HighOrLow\HighOrLow\bin\Debug\HOLusers\" + användarnamn + ".txt";
+
+                //Detta skapar en fil med namnet som användaren har valt och även lägger till en 0:a för att inte programmet ska krascha efter
                 FileStream createFile = File.Create(pathFile);
                 createFile.Close();
                 FileStream sw = File.OpenWrite(pathFile);
@@ -146,6 +187,11 @@ namespace HighOrLow
             }
         }
 
+        public void ResetPoint()
+        {
+            poäng = 0;
+        }
+        
         public string GetUserName()
         {
             return username;
