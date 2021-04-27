@@ -35,7 +35,7 @@ namespace HighOrLow
         {
             List<SkapaKortlek> kort = new List<SkapaKortlek>();
             SkapaKortlek[,] temporärKortlek = new SkapaKortlek[4, 13];
-            int index = 0;
+            
 
             for (int j = 0; j < 4; j++)
             {
@@ -43,7 +43,7 @@ namespace HighOrLow
                 {
                     temporärKortlek[j, k] = new SkapaKortlek((kortStorlek)k, (kortTyp)j);
                     kort.Add(temporärKortlek[j, k]);
-                    index++;
+                    
                 }
             }
 

@@ -26,6 +26,7 @@ namespace HighOrLow
 
             while (true)
             {
+                användare.ResetPoint();
                 for (int i = 0; i < 4; i++)
                 {
                     kortlek = SkapaKortlek.CreateCards();
@@ -34,19 +35,14 @@ namespace HighOrLow
                     Console.WriteLine("Omgång : " + (i + 1));
                     Barrier();
                     restart = GameRun(kortlek, temporärKortlek, användare, highscoreText);
+                    Console.WriteLine("Total poäng : " + användare.GetPoints());
+                    Console.ReadLine();
 
                     if (i == 3)
                     {
                         Console.WriteLine("Det var sista omgången och du samlade ihop : " + användare.GetPoints() + " poäng");
-                        Console.WriteLine("Vill du start om eller vill du stänga av spelet?");
-                        Console.WriteLine("Tryck 1 för att starta om spelet!");
-                        Console.WriteLine("Tryck 2 för att stänga av spelet! ");
-                        int endGame = LäsInInt();
-                        if (endGame == 1)
-                        {
-                            restart = false;
-                        }
-                        
+                        Console.WriteLine("Tryck \"Enter\" för att gå vidare");
+
                     }
 
                     if (restart)
@@ -73,9 +69,9 @@ namespace HighOrLow
         {
             Random randKort = new Random();
 
-            string points;
 
-            int poäng = 0;
+            int roundPoints = 0;
+           
             //om användaren vill start om spelet returnerar metoden den här booleanen till false.
             bool restart = false;
 
@@ -107,7 +103,7 @@ namespace HighOrLow
                 val = LäsInInt();
 
                 //Om korten är par så förlorar spelare och får välja om hen vill starta om eller avsluta spelet.
-                if (temporärKortlek[i].GetNumber() == temporärKortlek[i + 1].GetNumber())
+                if (/*temporärKortlek[i].GetNumber() == temporärKortlek[i + 1].GetNumber()*/false)
                 {
                     Console.BackgroundColor = ConsoleColor.Magenta;
                     Console.Write("Tyvärr du förlorade spelade för nästa kort var också : ");
@@ -126,16 +122,18 @@ namespace HighOrLow
                     }
                     else
                     {
+                        //Om användaren väljer att avsluta spelet så kallas metoden för att spara highscore
                         användare.Highscore(användare.GetPoints());
                         Environment.Exit(0);
                     }
                 }
 
                 //Om nästa kort är ett ess, det vill säga ett trumf kort så får hen poäng automatiskt.
-                else if (temporärKortlek[i + 1].GetNumber() == (kortStorlek)12)
+                else if (/*temporärKortlek[i + 1].GetNumber() == (kortStorlek)12*/true)
                 {
                     Console.BackgroundColor = ConsoleColor.Yellow;
-
+                    
+                    roundPoints++;
                     Console.WriteLine("Nästa kort var ett trumf kort så du får ett poäng ");
 
                     continue;
@@ -151,8 +149,8 @@ namespace HighOrLow
                 if (resultat)
                 {
                     Console.BackgroundColor = ConsoleColor.Green;
-
-                    poäng = användare.addPoints();
+                    roundPoints++;
+                    
                     Console.Write("Du hade rätt nästa kort var : ");
                     temporärKortlek[i + 1].ShowCards();
                 }
@@ -163,12 +161,12 @@ namespace HighOrLow
                     temporärKortlek[i + 1].ShowCards();
                 }
             }
-            if (poäng % 12 == 0)
+            if (roundPoints == 12 )
             {
                 Console.WriteLine("Grattis du hade alla rätt och får 50 extra poäng! ");
-                poäng += 50;
+                roundPoints += 50;
             }
-            Console.WriteLine("Omgång 1 är klar du samlade totalt : " + poäng + " poäng!");
+            Console.WriteLine("Omgången är klar du samlade totalt : " + roundPoints + " poäng!");
             Console.WriteLine("Tryck 1 för att fortsätta spelet : ");
             Console.WriteLine("Tryck 2 för att stänga av spelet : ");
             gameChoice = LäsInInt();
@@ -178,11 +176,13 @@ namespace HighOrLow
             }
             else
             {
+                //Om användaren väljer att avsluta spelet så kallas metoden för att spara highscore
                 användare.Highscore(användare.GetPoints());
 
                 Environment.Exit(0);
             }
 
+            användare.addPoints(roundPoints);
             Console.BackgroundColor = ConsoleColor.White;
             Barrier();
             Console.ReadLine();
@@ -235,7 +235,7 @@ namespace HighOrLow
         /// </summary>
         /// <param name="val"></param>
         /// <returns></returns>
-        private static int LäsInInt()
+         static int LäsInInt()
         {
             int val;
             while (true)
