@@ -11,6 +11,7 @@ namespace HighOrLow
     {
         //Fältvariabler
         private string username;
+
         private string highscore;
         private int poäng;
 
@@ -29,7 +30,6 @@ namespace HighOrLow
         public void addPoints(int roundPoints)
         {
             poäng += roundPoints;
-            
         }
 
         /// <summary>
@@ -38,19 +38,14 @@ namespace HighOrLow
         /// <param name="points"></param>
         public void Highscore(int points)
         {
-
-            
-
-
             int highscoreHeltal = int.Parse(highscore);
-           
 
             FileStream fileStream = File.OpenWrite(username);
             StreamWriter writer = new StreamWriter(fileStream);
 
-
             if (highscoreHeltal < points)
             {
+                highscore = points.ToString();
                 writer.WriteLine(points);
             }
             else
@@ -60,7 +55,6 @@ namespace HighOrLow
             writer.Close();
         }
 
-        
         /// <summary>
         /// Metoden låter användaren välja om hen vill använda en existerande användare eller skapa en ny
         /// </summary>
@@ -69,33 +63,34 @@ namespace HighOrLow
         {
             List<users> användare = new List<users>();
 
-            string path = @"Holusers\";
-            
+            string path = @"HOLusers\";
+
             string[] myFiles = Directory.GetFiles(path);
+            string[] fileName = Directory.GetFiles(path);
 
-            
+            foreach (string myFile in myFiles)
+            {
+                FileStream fileStream = File.OpenRead(myFile);
+                StreamReader reader = new StreamReader(fileStream);
 
-                foreach (string myFile in myFiles)
-                {
-                    FileStream fileStream = File.OpenRead(myFile);
-                    StreamReader reader = new StreamReader(fileStream);
-                    
-                    användare.Add(new users(myFile, reader.ReadLine() , 0));
-                     
+                användare.Add(new users(Path.GetFileNameWithoutExtension(myFile), reader.ReadLine(), 0));
 
-                    reader.Close();
-                    
-                }
-
-            
-           
+                reader.Close();
+            }
+            Console.WriteLine("Detta är highscore listan : ");
+            foreach (users user in användare)
+            {
+                Console.WriteLine(user.GetUserName() + " : " + user.GetHighscore());
+            }
+            Console.WriteLine("Tryck en tangent för att gå vidare!");
+            Console.ReadLine();
             int userChoice;
             string användarnamn;
 
             Console.WriteLine("Vill du använda en existerande användare eller skapa en ny?");
             Console.WriteLine("Tryck 1 för att använda en existerande!");
             Console.WriteLine("Tryck 2 för att skapa en ny användare!");
-            
+
             while (true)
             {
                 try
@@ -138,8 +133,8 @@ namespace HighOrLow
             }
             else
             {
-                    Console.Write("Skriv vad din användare ska ha för användarnamn : ");
-                    användarnamn = "";
+                Console.Write("Skriv vad din användare ska ha för användarnamn : ");
+                användarnamn = "";
                 bool existingUser = true;
 
                 while (existingUser)
@@ -147,8 +142,6 @@ namespace HighOrLow
                     användarnamn = Console.ReadLine();
                     foreach (users user in användare)
                     {
-
-
                         if (path + användarnamn + ".txt" == user.GetUserName())
                         {
                             Console.WriteLine("Denna användare finns redan! Välj ett annant användarnamn.");
@@ -159,30 +152,21 @@ namespace HighOrLow
                             existingUser = false;
                             break;
                         }
-
-
                     }
                 }
-                    
-                    
-                    
-                
-
-
-                string pathFile = @"C:\Users\CASPER\source\repos\HighOrLow\HighOrLow\bin\Debug\HOLusers\" + användarnamn + ".txt";
+                string pathFile = path + användarnamn + ".txt";
 
                 //Detta skapar en fil med namnet som användaren har valt och även lägger till en 0:a för att inte programmet ska krascha efter
                 FileStream createFile = File.Create(pathFile);
                 createFile.Close();
                 FileStream sw = File.OpenWrite(pathFile);
                 StreamWriter writer = new StreamWriter(sw);
-                
+
                 writer.WriteLine("0");
                 writer.Close();
-                
+
                 users newUser = new users(pathFile, "0", 0);
-                
-                
+
                 return newUser;
             }
         }
@@ -191,13 +175,13 @@ namespace HighOrLow
         {
             poäng = 0;
         }
-        
+
         public string GetUserName()
         {
             return username;
         }
 
-         public string GetHighscore()
+        public string GetHighscore()
         {
             return highscore;
         }
