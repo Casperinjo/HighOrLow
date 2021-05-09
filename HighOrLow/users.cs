@@ -72,11 +72,16 @@ namespace HighOrLow
             {
                 FileStream fileStream = File.OpenRead(myFile);
                 StreamReader reader = new StreamReader(fileStream);
+                
+
 
                 användare.Add(new users(Path.GetFileNameWithoutExtension(myFile), reader.ReadLine(), 0));
 
                 reader.Close();
             }
+            användare.Sort((h1, h2) => int.Parse(h2.GetHighscore()).CompareTo(int.Parse(h1.GetHighscore())));
+
+
             Console.WriteLine("Detta är highscore listan : ");
             foreach (users user in användare)
             {
